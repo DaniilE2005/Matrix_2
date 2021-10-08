@@ -1,32 +1,93 @@
-# Prerequisites
-*.d
+#include <bits/stdc++.h>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+using namespace std;
 
-# Precompiled Headers
-*.gch
-*.pch
+long long sum = 0;
+vector <vector<int>>c;
+vector <int>d;
+vector <int> d_2;
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+class Op{
+    int x;
+public:
+    Op(int x);
+    Op operator+(int);
+};
 
-# Fortran module files
-*.mod
-*.smod
+Op::Op(int x) {
+    c.resize(x);
+    d.resize(x);
+    d_2.resize(x);
+    int k;
+    for (int i = 0; i < x; i++) {
+        for (int j = 0; j < x; j++) {
+            cin >> k;
+            c[i].push_back(k);
+        }
+        d[i]=i+1;
+        d_2[i] = i+1;
+    }
+    /*for (int i = 0; i < x; i++) {
+        for (int j = 0; j < x; j++) {
+            cout << c[i][j] << " ";
+        }
+        cout << endl;
+    }*/
+}
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+Op Op::operator+(int x) {
+    int p, v;
+    /*for (int i = 0; i < x; i++) {
+        for (int j = 0; j < x; j++) {
+            cout << c[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << sum << " ";*/
+    do {
+        p = 1;
+        v = 1;
+        for (int j = 0; j < x; j++) {
+            //cout << x << " " << d[j] << endl;
+            p *= c[j][d[j]-1];
+            if (j > 0) {
+                if ((d[j]+x-d[j-1])%x!=1) {
+                    v = 0;
+                }
+            }
+            //cout << "i: " << (i+j)%x << " j: " << j << " p: " << p << endl;
+        }
+        if (v == 0) {
+            p = p * -1;
+        }
+        sum += p;
+        //for (int j = 0; j < x; j++) {
+            //cout << "i:" << j << " j:" << d[j]-1 << " element:" << c[j][d[j]-1] << " sum:" << sum << "   ";
+        //}
+        //cout << endl;
+        //cout << "\n";
+        //cout << " sum: " << sum << endl;
+    } while (next_permutation(d.begin(), d.end()));
+    //cout << endl << sum << endl;
+    /*do {
+        p = 1;
+        for (int j = x-1; j >= 0; j--) {
+            p *= c[d[j]-1][j];
+            //cout << "i: " << (x+i-j-1)%x << " j: " << j << " p: " << p << endl;
+        }
+        sum -= p;
+        for (int j = x-1; j >= 0; j--) {
+            cout << "i: " << d[j]-1 << " j: " << j << " element: " << c[d[j]-1][j] << "   ";
+        }
+        cout << endl;
+        //cout << " sum: " << sum << endl;
+    } while (next_permutation(d.begin(), d.end()));*/
+};
 
-# Executables
-*.exe
-*.out
-*.app
+int main() {
+    int x;
+    cin >> x;
+    Op c(x);
+    c + x;
+    cout << sum;
+}
